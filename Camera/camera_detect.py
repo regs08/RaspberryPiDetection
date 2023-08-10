@@ -4,6 +4,8 @@ from RaspberryPiDetection.OnnxModel.onnx_model_instance import YOLOSeg
 from supervision import Detections, BoxAnnotator, MaskAnnotator
 
 # Should just have it take a config file load it it etc ...
+import sys
+sys.path.append('/Users/cole/PycharmProjects/testClose/RaspberryPiDetection')
 
 
 class CameraStreamDetect(CameraStream):
