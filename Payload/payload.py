@@ -1,5 +1,6 @@
 from datetime import datetime
 
+
 class Payload:
     def __init__(self, detections, target_classes, conf):
         """
