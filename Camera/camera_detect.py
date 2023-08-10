@@ -1,6 +1,6 @@
 import cv2
-from RaspberryPiDetection1.Camera.camera_stream import CameraStream
-from RaspberryPiDetection1.OnnxModel.onnx_model_instance import YOLOSeg
+from RaspberryPiDetection.Camera.camera_stream import CameraStream
+from RaspberryPiDetection.OnnxModel.onnx_model_instance import YOLOSeg
 from supervision import Detections, BoxAnnotator, MaskAnnotator
 
 # Should just have it take a config file load it it etc ...

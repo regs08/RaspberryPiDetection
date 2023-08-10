@@ -1,5 +1,5 @@
 import cv2
-from RaspberryPiDetection1.Camera.camera_stream import CameraStream
+from RaspberryPiDetection.Camera.camera_stream import CameraStream
 
 import random
 

@@ -1,6 +1,6 @@
 import numpy as np
 import cv2
-from RaspberryPiDetection1.Config.default_config import default_config
+from RaspberryPiDetection.Config.default_config import default_config
 
 
 # Create a list of colors for each class where each color is a tuple of 3 integer values

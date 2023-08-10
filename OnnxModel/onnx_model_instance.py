@@ -10,7 +10,7 @@ import cv2
 import numpy as np
 import onnxruntime
 
-from RaspberryPiDetection1.OnnxModel.prediction_utils import xywh2xyxy, nms, sigmoid
+from RaspberryPiDetection.OnnxModel.prediction_utils import xywh2xyxy, nms, sigmoid
 
 class YOLOSeg:
 
