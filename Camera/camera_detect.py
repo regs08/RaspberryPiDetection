@@ -69,7 +69,7 @@ class CameraStreamDetect(CameraStream):
 
         return detections
 
-from RaspberryPiDetection1.Config.default_config import default_config
+from RaspberryPiDetection.Config.default_config import default_config
 
 if __name__ == '__main__':
     class_list = default_config['class_lists']['COCO']
