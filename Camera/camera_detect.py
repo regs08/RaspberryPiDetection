@@ -1,9 +1,11 @@
 import cv2
-from RaspberryPiDetection.Camera.camera_stream import CameraStream
-from RaspberryPiDetection.OnnxModel.onnx_model_instance import YOLOSeg
+from RaspberryPiDetection1.Camera.camera_stream import CameraStream
+from RaspberryPiDetection1.OnnxModel.onnx_model_instance import YOLOSeg
 from supervision import Detections, BoxAnnotator, MaskAnnotator
 
 # Should just have it take a config file load it it etc ...
+
+
 class CameraStreamDetect(CameraStream):
 
     def __init__(self, model_path, classes, camera_index=0, width=640, height=480):
@@ -67,7 +69,7 @@ class CameraStreamDetect(CameraStream):
 
         return detections
 
-from RaspberryPiDetection.Config.default_config import default_config
+from RaspberryPiDetection1.Config.default_config import default_config
 
 if __name__ == '__main__':
     class_list = default_config['class_lists']['COCO']
