@@ -3,6 +3,7 @@ from RaspberryPiDetection.Camera.camera_stream import CameraStream
 
 import random
 
+
 class CameraStreamTest(CameraStream):
     def __init__(self, camera_index=0):
         super().__init__(camera_index)
