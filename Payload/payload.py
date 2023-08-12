@@ -14,15 +14,14 @@ class Payload:
         self.target_classes = target_classes
         self.conf = conf
 
-    def format_detection(self, detection):
+    def format_detection(self, confidence, class_id):
         """
         Format a single detection into a string with the class name and confidence, including a timestamp.
 
         :param detection: A single detection object.
         :return: A formatted string or None if the detection doesn't match the criteria.
         """
-        confidence = detection.confidence
-        class_id = detection.class_id
+
         class_name = self.target_classes[class_id]
 
         if confidence >= self.conf:
@@ -36,9 +35,11 @@ class Payload:
 
         :return: A list of formatted strings.
         """
-        formatted = [self.format_detection(det) for det in self.detections]
+        formatted = [self.format_detection(conf, class_id) for _, _, conf, class_id, _ in self.detections]
         return [d for d in formatted if d]
 
     def send(self):
-        print(self.get_formatted_detections())
+        pkg = self.get_formatted_detections()
+        if pkg:
+            print(pkg)
 
