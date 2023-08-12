@@ -1,4 +1,6 @@
-
+"""
+main program that well use for now. Note when running from terminal get rid of the raspberryPiDetection from the import statement
+"""
 from RaspberryPiDetection.Camera.camera_stream import CameraStream
 from RaspberryPiDetection.OnnxModel.onnx_model_instance import YOLOSeg
 from RaspberryPiDetection.OnnxModel.prediction_utils import *
