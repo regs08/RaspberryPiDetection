@@ -10,7 +10,7 @@ import cv2
 import numpy as np
 import onnxruntime
 
-from OnnxModel.prediction_utils import xywh2xyxy, nms, sigmoid
+from RaspberryPiDetection.OnnxModel.prediction_utils import xywh2xyxy, nms, sigmoid
 
 class YOLOSeg:
 
@@ -29,11 +29,7 @@ class YOLOSeg:
     def predict_and_process_frame(self, frame, camera_canvas):
         processed_frame = self.preprocess_frame(frame)
         predictions = self.segment_objects(processed_frame)
-        # processed_predictions = PredictionProcessor(predictions,
-        #                                             camera=camera_canvas,
-        #                                             detections_format='onnx',
-        #                                             pred_image_shape=(self.img_height, self.img_width))
-        # return processed_predictions
+
         return predictions
 
     def initialize_model(self, path):
