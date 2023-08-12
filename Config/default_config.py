@@ -1,4 +1,4 @@
-from Config.config_loader import ConfigLoader
+from RaspberryPiDetection.Config.config_loader import ConfigLoader
 
 
 json_path = "/Users/cole/PycharmProjects/kivyTutorial/repo/App/Config/config.json"
