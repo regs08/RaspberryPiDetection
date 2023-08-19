@@ -21,7 +21,6 @@ class CameraStreamDetect(CameraStream):
         self.classes = classes
 
     def show_stream(self):
-        """Displays the webcam stream with random rectangles."""
         while True:
             ret, self.frame = self.cap.read()
             if ret:
