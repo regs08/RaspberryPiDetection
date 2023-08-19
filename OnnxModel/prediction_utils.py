@@ -13,9 +13,10 @@ colors = rng.uniform(0, 255, size=(len(class_names), 3))
 def nms(boxes, scores, iou_threshold):
     # Sort by score
     sorted_indices = np.argsort(scores)[::-1]
-
+    print('nms... ')
     keep_boxes = []
     while sorted_indices.size > 0:
+        print('eee')
         # Pick the last box
         box_id = sorted_indices[0]
         keep_boxes.append(box_id)
