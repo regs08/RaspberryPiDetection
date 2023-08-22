@@ -3,6 +3,11 @@ import json
 
 class ConfigLoader:
     def __init__(self, file_path):
+        """
+        loads in config if no file path is spcified it loads it the path stored in config path. Must run update config
+        for it to be accurate
+        :param file_path:
+        """
         self.file_path = file_path
         self.config = self.load_config()
 
