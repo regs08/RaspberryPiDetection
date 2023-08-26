@@ -1,6 +1,7 @@
 {
     "config_path": "/Users/cole/PycharmProjects/TFLite/Models/config.json",
     "model_paths": {
+        "tflite-yolo-v5": "/Users/cole/PycharmProjects/TFLite/Models/tflite-v5.tflite",
         "onnx-od-l": "/Users/cole/PycharmProjects/TFLite/Models/yolov8l.onnx",
         "onnx-od-n": "/Users/cole/PycharmProjects/TFLite/Models/yolov8n.onnx",
         "onnx-seg-n": "/Users/cole/PycharmProjects/TFLite/Models/yolov8n-seg.onnx"
@@ -9,6 +10,9 @@
         640,
         480
     ],
+    "label_maps": {
+        "COCO": "/Users/cole/PycharmProjects/TFLite/Config/label_map_COCO.txt"
+    },
     "class_lists": {
         "COCO": [
             "person",
