@@ -1,60 +1,44 @@
-"""
-main program that well use for now. Note when running from terminal get rid of the raspberryPiDetection from the import statement
-"""
-from RaspberryPiDetection.Camera.camera_stream import CameraStream
-from RaspberryPiDetection.OnnxModel.onnx_model_instance import YOLOSeg
-from RaspberryPiDetection.OnnxModel.prediction_utils import *
-from RaspberryPiDetection.Payload.payload import Payload
-from RaspberryPiDetection.Predictions.detections import Detections
-
+from Camera.camera_stream import CameraStream
+import cv2
+import supervision as sv
 
 class CameraStreamDetect(CameraStream):
 
-    def __init__(self, model_path, classes, camera_index=0, width=640, height=480):
+    def __init__(self, model, camera_index=0, width=800, height=640):
         super().__init__(camera_index)
         # Set the resolution to 640x480
-        self.cap.set(cv2.CAP_PROP_FRAME_WIDTH, width)
-        self.cap.set(cv2.CAP_PROP_FRAME_HEIGHT, height)
+        # self.cap.set(cv2.CAP_PROP_FRAME_WIDTH, width)
+        # self.cap.set(cv2.CAP_PROP_FRAME_HEIGHT, height)
 
-        self.model = YOLOSeg(model_path=model_path)
-
-        self.classes = classes
+        self.model = model
 
     def show_stream(self):
         while True:
             ret, self.frame = self.cap.read()
             if ret:
-                detections = self.detect()
-                payload = Payload(detections, ['person'], 0.2)
-                payload.send()
-                cv2.imshow('prediction', self.annotate_frame(detections))
+                # Get detections from Model and then process them returning a Detections object
+                detections = self.model.detect_and_process(image=self.frame)
 
+                box_annotator = sv.BoxAnnotator()
+                if len(detections) > 0:
+                    annotated_frame = box_annotator.annotate(self.frame, detections)
+                # payload = Payload(detections, ['person'], 0.2)
+                # payload.send()
+                # Annotate frame
+                    cv2.imshow('prediction', annotated_frame)
+                else: cv2.imshow('prediction', self.frame)
             if cv2.waitKey(1) & 0xFF == ord('q'):
                 break
 
         self.cleanup()
 
-    def detect(self):
 
-        preds = self.model.segment_objects(image=self.frame)
-        detections=Detections(preds)
-        return detections
 
-    def annotate_frame(self, detections):
+def draw_rectangles(image, boxes):
+    for box in boxes:
+        # Retrieve the bounding box coordinates
+        x_min, y_min, x_max, y_max = box.astype(int)
+        # Draw the rectangle
+        cv2.rectangle(image, (x_min, y_min), (x_max, y_max), (0, 255, 0), 2)
 
-        annotated_frame = draw_detections(image=self.frame,
-                                          boxes=detections.boxes,
-                                          scores=detections.scores,
-                                          class_ids=detections.class_id,
-                                          mask_maps=detections.mask_maps,
-                                          )
-        return annotated_frame
-
-from RaspberryPiDetection.Config.default_config import default_config
-
-if __name__ == '__main__':
-    class_list = default_config['class_lists']['COCO']
-
-    model_path = "/Users/cole/PycharmProjects/kivyTutorial/repo/App/Models/yolov8n-seg.onnx"
-    stream = CameraStreamDetect(model_path=model_path, classes=class_list)
-    stream.show_stream()
+    return image
