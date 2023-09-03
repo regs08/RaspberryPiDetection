@@ -6,15 +6,15 @@ from ModelInstances.yolo_tflite.prediction_processor_yolo import PredictionProce
 
 
 class YOLOTFLite(ObjectDetectorBase):
-    def __init__(self, model_path, label_map_path):
-        super().__init__(model_path)
+    def __init__(self, model_path, label_map_path, prediction_processor=PredictionProcessorYOLO):
+        super().__init__(model_path, prediction_processor)
 
         self.label_map_path = label_map_path
 
         with open(self.label_map_path, 'r') as f:
             self.labels = [line.strip() for line in f.readlines()]
         self.colors = np.random.randint(0, 255, size=(len(self.labels), 3), dtype='uint8')
-        self.prediction_processor = PredictionProcessorYOLO
+
 
     def _load_model(self):
 
@@ -51,9 +51,8 @@ class YOLOTFLite(ObjectDetectorBase):
     ###
 
     def detect_and_process(self, image):
-        image_height, image_width = image.shape[0], image.shape[1]
         outputs = self.detect(image)
-        processed_predictions = PredictionProcessorYOLO(outputs)
+        processed_predictions = self.prediction_processor(outputs)
         # Checks for predictions
         detections = processed_predictions.process_predictions(input_shape=(self.input_image_height, self.input_image_width),
                                                                image_shape=image.shape[:2])
@@ -61,11 +60,3 @@ class YOLOTFLite(ObjectDetectorBase):
 
 
 
-def draw_rectangles(image, boxes):
-    for box in boxes:
-        # Retrieve the bounding box coordinates
-        x_min, y_min, x_max, y_max = box.astype(int)
-        # Draw the rectangle
-        cv2.rectangle(image, (x_min, y_min), (x_max, y_max), (0, 255, 0), 2)
-
-    return image

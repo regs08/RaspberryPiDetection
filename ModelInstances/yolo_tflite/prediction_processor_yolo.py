@@ -1,9 +1,9 @@
 import numpy as np
 import cv2
-from ProcessPredictions.core import PredictionProcessor
+from ProcessPredictions.core import PredictionProcessorOD
 
 
-class PredictionProcessorYOLO(PredictionProcessor):
+class PredictionProcessorYOLO(PredictionProcessorOD):
 
     def extract_predictions(self, input_shape, image_shape, **args):
         """
@@ -46,14 +46,18 @@ class PredictionProcessorYOLO(PredictionProcessor):
         for indice in indices:
             self.boxes.append(boxes[indice])
             self.class_ids.append(class_ids[indice])
-            self.score = scores[indice] * confidence[indice]
-        self.boxes = self.rescale_boxes(self.boxes, input_shape, image_shape)
-        return np.array(self.boxes), np.array([self.score]), np.array(self.class_ids), mask
+            self.score.append(scores[indice] * confidence[indice])
 
-    def detection_check(self):
-        if len(self.boxes) == 0:
-            self.boxes = np.zeros((0,4))
-            self.score = np.zeros((0,1))
-            self.class_ids = np.zeros((0,1))
+        if boxes:
+            self.boxes = self.rescale_boxes(self.boxes, input_shape, image_shape)
+            return self.boxes, np.array(self.score), np.array(self.class_ids), mask
+
+        return None
+
+    # def detection_check(self):
+    #     if len(self.boxes) == 0:
+    #         self.boxes = np.zeros((0,4))
+    #         self.score = np.zeros((0,1))
+    #         self.class_ids = np.zeros((0,1))
 
 
