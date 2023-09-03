@@ -66,6 +66,7 @@ class OnnxTFLite(ObjectDetectorBase):
     def detect_and_process(self, image):
         outputs = self.detect(image)
         processed_predictions = PredictionProcessorOnnx(outputs[0])
+
         detections = processed_predictions.process_predictions(box_output=outputs[0],
                                                                input_shape=self.input_image_shape[-2:],
                                                                image_shape=image.shape[:2])

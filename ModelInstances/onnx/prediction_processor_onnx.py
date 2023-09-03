@@ -1,9 +1,12 @@
 import numpy as np
-from ProcessPredictions.core import PredictionProcessor
+from ProcessPredictions.prediction_processorOD import PredictionProcessorOD
 from cv2.dnn import NMSBoxes
-class PredictionProcessorOnnx(PredictionProcessor):
+
+
+class PredictionProcessorOnnx(PredictionProcessorOD):
 
     def extract_predictions(self, input_shape, image_shape, **args):
+
         box_output = args.get('box_output')
         predictions = np.squeeze(box_output).T
         num_classes = box_output.shape[1] - self.num_masks - 4
@@ -13,7 +16,7 @@ class PredictionProcessorOnnx(PredictionProcessor):
         scores = scores[scores > self.conf_threshold]
 
         if len(scores) == 0:
-            return [], [], [], np.array([])
+            return None
 
         box_predictions = predictions[..., :num_classes+4]
         mask_predictions = predictions[..., num_classes+4:]
@@ -30,7 +33,7 @@ class PredictionProcessorOnnx(PredictionProcessor):
         # Apply non-maxima suppression to suppress weak, overlapping bounding boxes
         indices = NMSBoxes(boxes, scores, self.conf_threshold, self.iou_threshold)
 
-        return boxes[indices], scores[indices], class_ids[indices], mask_predictions[indices]
+        return np.array(boxes)[indices], np.array(scores)[indices], np.array(class_ids)[indices], np.array(mask_predictions)[indices]
 
     def extract_boxes(self, box_predictions, input_shape, image_shape):
         # Extract and rescale boxes from predictions
