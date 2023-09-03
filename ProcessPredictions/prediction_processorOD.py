@@ -1,27 +1,23 @@
 """
-Want the base class to process the predictions of the model and then return a detections based object
+Our base class for using object detection models such as onnx and tflite. Masks not supported
 """
 
-from abc import ABC, abstractmethod
+from abc import abstractmethod
 from dataclasses import dataclass, field
 import numpy as np
-
-from Predictions.core import Detections
 import supervision as sv
+
+from ProcessPredictions.base_class import PredictionProcessor
+
+
 @dataclass
-class PredictionProcessor(ABC):
-    outputs: np.ndarray
-    mask: np.ndarray = field(default_factory=list)  #todo intialize as empty np
-    iou_threshold = float = 0.7
-    conf_threshold: float = 0.5
-    class_threshold: float = 0.5
-    label_size: float = 0.5
+class PredictionProcessorOD(PredictionProcessor):
+    mask: np.ndarray = field(default_factory=list)
     boxes: np.ndarray = field(default_factory=list)
     box_confidences: np.ndarray = field(default_factory=list)
     class_ids: np.ndarray = field(default_factory=list)
     score: np.ndarray = field(default_factory=list)
     num_masks: int = 0
-
 
     @abstractmethod
     def extract_predictions(self, input_shape, image_shape, **args):
@@ -30,21 +26,22 @@ class PredictionProcessor(ABC):
     def process_predictions(self, input_shape, image_shape, **args):
 
         # Extracts predicionts after applying nms stores as class variables
-
-        boxes, scores, class_ids, mask = self.extract_predictions(input_shape, image_shape, **args)
-
-        print(scores.shape, class_ids.shape)
-        detections = sv.Detections(xyxy=boxes,
-                                    confidence=np.array(scores),
-                                    class_id=np.array(class_ids))
-                                    #mask=mask)
-
-        return detections
+        preds = self.extract_predictions(input_shape, image_shape, **args)
+        if preds:
+            boxes, scores, class_ids, mask = preds
+            detections = sv.Detections(xyxy=boxes,
+                                        confidence=np.array(scores),
+                                        class_id=np.array(class_ids),
+                                       tracker_id=None
+                                        )
+                                        #mask=mask)
+            return detections
+        return sv.Detections.empty()
 
 
     @staticmethod
     def rescale_boxes(boxes, input_shape, image_shape):
-        print('input size', input_shape, image_shape)
+        #print('input size', input_shape, image_shape)
         # Rescale boxes to original image dimensions
         input_shape = np.array([input_shape[1], input_shape[0], input_shape[1], input_shape[0]])
         boxes = np.divide(boxes, input_shape, dtype=np.float32)
