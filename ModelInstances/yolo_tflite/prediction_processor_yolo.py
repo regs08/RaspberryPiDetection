@@ -1,6 +1,6 @@
 import numpy as np
 import cv2
-from ProcessPredictions.core import PredictionProcessorOD
+from ProcessPredictions.prediction_processorOD import PredictionProcessorOD
 
 
 class PredictionProcessorYOLO(PredictionProcessorOD):
