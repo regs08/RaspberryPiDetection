@@ -26,10 +26,7 @@ class ConfigLoader:
             return self.default_config()
 
     def default_config(self):
-        return {
-            'model_paths': {'yolov8n': '/default/path/here'},
-            # Add your other default configurations here...
-        }
+        return print("Config not found")
 
     def load_label_maps(self):
         label_map_dir = os.path.join(self.project_dir, 'LabelMaps')
