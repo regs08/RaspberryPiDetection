@@ -76,10 +76,11 @@ class ConfigLoader:
         # Replace the paths
         for key, value in config['model_paths'].items():
             filename = os.path.basename(value)
-            #new_path = value.replace("...", repo_path)
             config['model_paths'][key] = os.path.join(model_dir, filename)
+
         # updating config path assuming that is named config.json
         config['config_path'] = os.path.join(model_dir, 'config.json')
+
         # Write the updated config back to the file
         with open(self.config_path, 'w') as file:
             json.dump(config, file, indent=4)

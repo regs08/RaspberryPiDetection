@@ -4,7 +4,8 @@
         "tflite-yolo-v5": "/Users/cole/PycharmProjects/TFLite/Models/tflite-v5.tflite",
         "onnx-od-l": "/Users/cole/PycharmProjects/TFLite/Models/yolov8l.onnx",
         "onnx-od-n": "/Users/cole/PycharmProjects/TFLite/Models/yolov8n.onnx",
-        "onnx-seg-n": "/Users/cole/PycharmProjects/TFLite/Models/yolov8n-seg.onnx"
+        "onnx-seg-n": "/Users/cole/PycharmProjects/TFLite/Models/yolov8n-seg.onnx",
+        "efficient-net": "/Users/cole/PycharmProjects/TFLite/Models/efficientnet_lite0.tflite"
     },
     "camera_resolution": [
         640,
