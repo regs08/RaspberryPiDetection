@@ -1,4 +1,3 @@
-from ModelInstances.yolo_tflite.yolo_model import YOLOTFLite
 from Camera.camera_detect import CameraStreamDetect
 from Config.default_config import default_config
 from ModelInstances.tf_lite_yolo import TFLiteYOLO
