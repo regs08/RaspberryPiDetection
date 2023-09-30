@@ -1,7 +1,7 @@
 import cv2
 import utils
 from tflite_support.task import core, processor, vision
-from tfltite_test.raspberry_pi.base_model import BaseModel
+from Stream.base_model import BaseModel
 
 
 class ObjectDetector(BaseModel):
